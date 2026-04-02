@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Storage;
 use App\Models\{
     User,
     Comment
@@ -92,22 +90,6 @@ class CommentController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        // Ограничение: гости могут комментировать только посты старше 5 минут
-        // if (!auth()->check() && $request->post_id) {
-        //     $post = Post::select('date')->whereKey($request->post_id);
-        //     if ($post->date->diffInMinutes() < 5) {
-        //         return response()->json([
-        //             'message' => 'Только авторизованные пользователи могут комментировать новые посты.'
-        //         ], 403);
-        //     }
-        // }
-
-        // if ($level === null) { // Если родителя нет — прерываем выполнение с ошибкой валидации
-        //     throw ValidationException::withMessages([
-        //         'parent' => 'Родительский комментарий не найден.'
-        //     ]);
-        // }
-
         $rules = [
             'type'    => 'required|string|in:' . implode(',', array_keys(Comment::TYPES)),
             'parent'  => 'required|integer|min:0', 
@@ -125,8 +107,6 @@ class CommentController extends Controller
             'comment.required' => 'Вы не заполнили поле "комментарий"',
         ]);
 
-        // $data['level'] = 0;
-
         if ($data['parent'] > 0) {
             $level = Comment::where('id', $data['parent'])->isHidden(0)->value('level');
             $data['level'] = ($level ?? -1) + 1;
@@ -139,7 +119,9 @@ class CommentController extends Controller
         } catch (\Throwable $e) {
             $status = 403;
             $result = 'Ошибка запроса при добавлении комментария.'; 
-            logger()->error($result . ': ', ['exception' => $e->getMessage()]);
+            logger()->error($result, [
+                'exception' => $e->getMessage()
+            ]);
         } finally {
             return response()->json([
                 'success' => $status === 200,
@@ -228,9 +210,8 @@ class CommentController extends Controller
             return redirect()->route('comments.index')
                 ->with('success', $result);
         } catch (\Throwable $e) {
-            $result = 'Ошибка запроса при удалении комментария';
-            // report($e); 
-            logger()->error($result . ': ', [
+            $result = 'Ошибка запроса при удалении комментария'; 
+            logger()->error($result, [
                 'exception' => $e->getMessage()
             ]);
             return redirect()->route('comments.index')
