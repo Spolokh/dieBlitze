@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use DB;
-use Log;
 use Storage;
 use Carbon\Carbon;
 use Illuminate\Http\{
@@ -140,10 +139,10 @@ class BlogController extends Controller
             return redirect()->route('blog.edit', $post)
                 ->with('success', $result);
         } catch (\Throwable $e) {
-            logger()->error('Ошибка при создании поста, [
+            $result = 'Ошибка при создании поста';
+            logger()->error($result, [
                 'exception' => $e->getMessage(),
             ]);
-            $result = 'Ошибка при создании поста';
             return redirect()->back()
                 ->with('error', $result)->withInput();
         }
@@ -265,13 +264,12 @@ class BlogController extends Controller
         //     OR Storage::disk('uploads')->makeDirectory('posts');
 
         try {
-            //$image = Image::gd()->read($file->getRealPath());
             Storage::disk('uploads')->putFileAs('posts', $file, $name);
             $post->update(['image' => $name]);
-
         } catch (\Exception $e) {
-            Log::error('Ошибка обработки изображения: ' . $e->getMessage());
-            throw $e;
+            logger()->error('Ошибка обработки изображения' [
+                'exception' => $e->getMessage(),
+            ]);
         }
     }
 }
