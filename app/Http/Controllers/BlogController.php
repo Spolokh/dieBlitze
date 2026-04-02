@@ -25,7 +25,6 @@ class BlogController extends Controller
 {
     public function __construct(private int $limit = 7)
     {
-        // $this->authorizeResource(Post::class);
     }
 
     public function index()
@@ -44,14 +43,6 @@ class BlogController extends Controller
                 $query->byAuthor($author)
             )
             ->search($search);
-
-        // $query->withoutGlobalScope('hidden');
-        // Post::withoutGlobalScopes()->get();
-        // Отключение нескольких скоупов:
-        // Post::withoutGlobalScopes([
-        //     HiddenScope::class,
-        //     AnotherScope::class
-        // ])->get();
 
         if (!$user || !$user->isAdmin()) {
             $post->isType('blog');
