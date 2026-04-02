@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * @return void
+     */
+    public function boot()
+    {
+        Paginator::useBootstrapFive();
+    }
+}
