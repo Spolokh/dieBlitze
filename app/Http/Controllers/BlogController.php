@@ -140,8 +140,8 @@ class BlogController extends Controller
             return redirect()->route('blog.edit', $post)
                 ->with('success', $result);
         } catch (\Throwable $e) {
-            Log::error('Ошибка при создании поста: ' . $e->getMessage(), [
-                'exception' => $e,
+            logger()->error('Ошибка при создании поста, [
+                'exception' => $e->getMessage(),
             ]);
             $result = 'Ошибка при создании поста';
             return redirect()->back()
@@ -195,15 +195,15 @@ class BlogController extends Controller
             });
 
             $this->handleImageUpload($request, $post);
-
-            // Cache::tags(['posts'])->flush();
             $status = 200;
             $result = 'Пост #ID ' . $post->id . ' успешно обновлён';
 
         } catch (\Throwable $e) {
             $status = 500;
             $result = 'Ошибка запроса при редактировании поста';
-            Log::error('Ошибка запроса при редактировании поста: ' . $e->getMessage());
+            logger()->error($result, [
+              'exception' => $e->getMessage()
+            ]);
         } finally {
             return response()->json([
                 'success' => $status === 200,
@@ -227,7 +227,9 @@ class BlogController extends Controller
         } catch (\Throwable $e) {
             $status = 403;
             $result = 'Ошибка запроса при удалении поста';
-            Log::error($result .': ' . $e->getMessage());
+            logger()->error($result, [
+              'exception' => $e->getMessage()
+            ]);
         } finally {
             return redirect()->route('blog.index')
                 ->with('success', $result);
