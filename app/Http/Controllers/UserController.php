@@ -8,7 +8,6 @@
  */
 namespace App\Http\Controllers;
 
-use Log;
 use Illuminate\Http\{
     Request,
     Response,
@@ -23,8 +22,6 @@ use App\Models\{
 };
 
 use App\Http\Traits\GetUserGroups;
-
-// use Intervention\Image\ImageManager as Image;
 
 class UserController extends Controller
 {
@@ -111,12 +108,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $users
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user): RedirectResponse
     {
-        // dd($user);
         try {
             $name = $user->username;
             $user->delete();
@@ -172,7 +168,7 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // abort_unless($request->user()->isAdmin(), 403, 'Доступ запрещён');
+        abort_unless($request->user()->isAdmin(), 403, 'Доступ запрещён');
         $data = $request->validate([
             'name'      => 'nullable|between:3,20',
             'mail'      => 'required|email|unique:users,mail',
@@ -192,58 +188,8 @@ class UserController extends Controller
         ]);
 
         $data['password'] = bcrypt($data['password']);
-
         User::create($data);
-
         return redirect()->route('users.create')
             ->with('success', 'Пользователь успешно создан!');
-    }
-
-    private function handleImageUpload(Request $request, Users $user): void
-    {
-        if (!$request->hasFile('avatar')) {
-            return;
-        }
-
-        $request->validate([
-            'avatar' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
-        ], [
-            'avatar.image' => 'Ваш файл не является картинкой',
-            'avatar.mimes' => 'Ваш файл не является картинкой',
-            'avatar.max'   => 'Ваш файл не должен превышать 2МБ',
-        ]);
-
-        // $image = Image::gd()->read($request->file('avatar')); // Инициализация Intervention (v3.x)
-
-        try {
-
-            $username = $user->username;
-            $filename = 'userpics/' .$username. '.jpg';
-            Storage::disk('public')->put($filename, $image->toJpeg(95));
-
-            // if ($request->has('cropping')) {
-            //     $image->crop(
-            //         (int) $request->width,
-            //         (int) $request->height,
-            //         (int) $request->x,
-            //         (int) $request->y,
-            //     )->scale(width: 350); 
-            //     // ->cover(350, 350);
-            //     $filename = 'userpics/thumbs/' .$username. '.jpg';
-            //     Storage::disk('public')->put($filename, $image->toJpeg(95));
-            // }
-            // Users::find($request->user)->fill(['avatar' => 'jpg'])->save(); 
-
-            $result = back()->with('success', 'Ваш аватар обновлён!');
-
-        } catch (\Throwable $e) {
-            logger()->error('Ошибка отправки файла: ', [
-                'exception' => $e->getMessage()
-            ]);
-            $result = back()->with('error', 'Что-то пошло не так. Попробуйте снова.');
-        } 
-        //finally {
-            // return $result;
-        //}
     }
 }
