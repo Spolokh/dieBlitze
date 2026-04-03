@@ -40,12 +40,6 @@
 										<div class="upImageResult"></div>
 									</div>
 								</div>
-								<!--div class="mb-3 row text-muted">
-									<label for="" class="col-12 col-lg-3 col-form-label">{{ __('Автор:') }}</label>
-									<div class="col-12 col-lg-9">
-										<input class="form-control" type="text" placeholder="Автор" />
-									</div>
-								</div-->
 								<div class="mb-3 row text-muted">
 									<label for="" class="col-12 col-lg-3 col-form-label">{{ __('Мета описание:') }}</label>
 									<div class="col-12 col-lg-9">
@@ -131,41 +125,11 @@
 				});
 
 				$('#createPost').submit(function(e) {
-					// e.preventDefault();
 					let $form = $(this)
-					// 	, params = new FormData(this)
-					// 	, action = $form.attr('action')
-					// 	, loader = $form.find('.loader')
-					// 	, result = $form.find('.result')
-					// 	, submit = $form.find('[type="submit"]')
-					// 	, errors = []
-					// 	, notice = '';
-
 					if (!$form.valid()) {
 						e.preventDefault();
 						return false;
 					}
-
-					// $.post({
-					// 	url    : action,
-					// 	data   : params,
-					// 	dataType: 'json',
-					// 	processData: false,  // ← Запрещаем обработку данных
-        			// 	contentType: false,  // ← Не устанавливаем Content-Type
-					// 	beforeSend: function() {
-					// 		loader.toggleClass('d-none');
-					// 	}
-					// }).done(xhr => {
-					// 	notice = Template.render('#tplDone', {message: xhr.message});
-					// }).fail(xhr => {
-					// 	errors = xhr.responseJSON.errors
-					// 		? Object.values(xhr.responseJSON.errors).flat()
-					// 		: [xhr.responseJSON.message];
-					// 	notice = Template.render('#tplFail', {errors: errors});
-					// }).always(xhr => {
-				    // 	result.html(notice);
-					// 	loader.toggleClass('d-none');
-					// });
 				}).validity();
 
 				$('#createPost').find('[name="image"]').change(function() {
@@ -180,62 +144,5 @@
 					});
 				});	
 			});
-			// Поддержка динамически добавленных элементов (через делегирование)
-			// document.addEventListener('input', function(e) {
-			// 	if (e.target.matches('textarea[maxlength]') && !e.target.dataset.charCounterInitialized) {
-			// 		initCharCounters(); // Повторная инициализация для новых элементов
-			// 	}
-			// });
-
-
-			// document.addEventListener('DOMContentLoaded', () => {
-
-			// 	const textarea  = document.querySelectorAll('textarea[maxlength]');
-			// 	const charCount = document.getElementById('char-count');
-			// 	const charWarning = document.getElementById('char-warning');
-			// 	const maxLength = textarea.getAttribute('maxlength') || 500;
-
-			// 	// Инициализация
-			// 	updateCharCount();
-    
-			// 	// События
-			// 	textarea.addEventListener('input', updateCharCount);
-			// 	textarea.addEventListener('keydown', preventOverflow);
-    
-			// 	function updateCharCount() {
-			// 		const currentLength = textarea.value.length;
-			// 		charCount.textContent = currentLength;
-					
-			// 		// Визуальная индикация
-			// 		(currentLength > maxLength * 0.9) // 90% заполнения
-			// 			? charWarning.classList.add('show')
-			// 			: charWarning.classList.remove('show');
-					
-			// 		// Превышение лимита
-			// 		(currentLength > maxLength)
-			// 			? textarea.classList.add('char-limit-exceeded')
-			// 			: textarea.classList.remove('char-limit-exceeded');
-			// 	}
-
-			// 	function preventOverflow(e) {
-			// 		// Блокируем ввод при достижении лимита (кроме служебных клавиш)
-			// 		if (textarea.value.length >= maxLength && 
-			// 			!['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
-			// 			e.preventDefault();
-			// 			return false;
-			// 		}
-			// 	}
-    
-			// 	// Опционально: копирование при клике на счётчик
-			// 	charCount.addEventListener('click', () => {
-			// 		navigator.clipboard.writeText(`${charCount.textContent} / ${maxLength}`);
-			// 		showToast('Скопировано: ' + charCount.textContent + ' символов', 'success');
-			// 	});
-
-			// 	function showToast(message, type = 'info') {
-			// 		// Простая реализация через alert или кастомный тост
-			// 		alert(`${type.toUpperCase()}: ${message}`);
-			// 	}
-			// });
 		</script>
 @endpush
