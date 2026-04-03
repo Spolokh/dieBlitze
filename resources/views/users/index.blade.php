@@ -50,7 +50,6 @@
 		<script src="/js/xlsx.min.js"></script>
 		<script>
 			jQuery(function($) {
-
 				const optionsGroups = @json($groups);
 				const optionsActive = [
 					'Активные',
@@ -81,10 +80,7 @@
 						, lengthMenu: [10, 25, 50, 100]
 						, ajax: {
 							url : route,
-							type: 'GET',
-							error: function(){
-
-							}
+							type: 'GET'
 						}
 						, language: {
 							sUrl: "/js/i18n/ru.json"
@@ -125,22 +121,18 @@
 							});
 
 							this.api().cells(null, 1).every(function() {
-								//const data = this.data();
 								const node = this.node();
 								$(node).attr('aria-label', 'Имя:');
 							});
 							this.api().cells(null, 2).every(function() {
-								//const data = this.data();
 								const node = this.node();
 								$(node).attr('aria-label', 'Почта:');
 							});
 							this.api().cells(null, 3).every(function() {
-								//const data = this.data();
 								const node = this.node();
 								$(node).attr('aria-label', 'Группа:');
 							});
 							this.api().cells(null, 4).every(function() {
-								//const data = this.data();
 								const node = this.node();
 								$(node).attr('aria-label', 'Последний визит:');
 							});
@@ -236,10 +228,6 @@
 						break;
 					}
 				});
-
-				// setInterval(() => {
-				//  	//table.ajax.reload(null, false);
-				// }, 4000);
 			});
 		</script>
 @endpush 
