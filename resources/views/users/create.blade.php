@@ -126,10 +126,6 @@
 							? $(this).submit()
 							: e.preventDefault();
 				}).validity();
-
-				// $('#createUser').find('[name="avatar"]').change(function() {
-				// 	uploadImage(this.files[0], this, 5);
-				// });
 			});
 		</script>
 @endpush
