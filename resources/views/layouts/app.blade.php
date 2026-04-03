@@ -12,7 +12,6 @@
         <link rel="canonical" hreflang="{{ app()->getLocale() }}" href="{{ url()->current() }}" />
         <link rel="alternate" type="application/rss+xml" title="{{str_replace('_', ' ', env('APP_NAME'))}}" href="{{ url('rss.xml') }}" />
         <link rel="stylesheet" href="/css/style.css" />
-        <!--link rel="stylesheet" href="/css/all.min.css" /-->
         <link rel="stylesheet" href="/fonts/roboto/style.css" />
         @yield('styles') 
     </head>
