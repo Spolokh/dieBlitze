@@ -166,23 +166,8 @@
 @push('scripts')
 <script src="/js/jquery.validity.js"></script>
 		<script>
-
-			// document.getElementById('searchComment')?.addEventListener('reset', function (e) {
-			// 	e.preventDefault();
-			// 	this.reset();
-			// 	// Очищаем параметры из URL (без перезагрузки)
-			// 	const url = new URL(window.location);
-			// 	url.searchParams.delete('author');
-			// 	url.searchParams.delete('type');
-			// 	url.searchParams.delete('ip');
-			// 	url.searchParams.delete('search');
-			// 	window.history.replaceState({}, '', url);
-			// 	// Опционально: перезагрузить страницу
-			// 	// window.location.href = url.pathname;
-			// });
 			jQuery(function($) {
 				const route = '{{ route("comments.index") }}';
-
 				$('#listComment').on('submit', function(e) {
 					e.preventDefault();
 					let form   = $(this),
