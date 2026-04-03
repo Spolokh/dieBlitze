@@ -50,11 +50,11 @@
 									<label for="" class="col-12 col-lg-3 col-form-label">{{ __('Тип поста:') }}</label>
 									<div class="col-12 col-lg-9">
 										<select name="type" id="type" class="form-select">
-											@foreach($types as $k => $row)
-												<option value="{{ $k }}" @selected(old('type') == $k)>
-													{{ $row }}
-												</option>
-											@endforeach
+										@foreach($types as $k => $row)
+											<option value="{{ $k }}" @selected(old('type') == $k)>
+												{{ $row }}
+											</option>
+										@endforeach
 										</select>
 									</div>
 								</div>
@@ -62,7 +62,7 @@
 									<label for="" class="col-12 col-lg-3 col-form-label">{{ __('Статус:') }}</label>
 									<div class="col-12 col-lg-9">
 										<select name="hidden" id="hidden" class="form-select">
-											@foreach([0 => 'Активен', 1 => 'Не активен'] as $k => $row)
+											@foreach(['Активен', 'Не активен'] as $k => $row)
 												<option value="{{ $k }}" @selected(old('type') == $k)>
 													{{ $row }}
 												</option>
