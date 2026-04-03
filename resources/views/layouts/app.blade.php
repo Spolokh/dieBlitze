@@ -160,10 +160,6 @@
         <a id="nachKopf" class="border text-center rounded-circle position-fixed">
             <i class="fa fa-lg fa-arrow-up"></i>
         </a>
-        <!-- <div id="mainloader" class="w-100 h-100 position-fixed bg-white top-0 end-0" style="z-index: 100">
-            <div class="fancybox-loading"></div>
-        </div> -->
-        <!--Шаблоны (невидимые, не выполняются как JS)-->
 		<script type="text/template" id="tplDone">
 			<div class="alert alert-success alert-dismissible fade show">
 				[[message]]
@@ -183,19 +179,5 @@
         <script src="/js/app.js"></script>
         <script src="/js/functions.js"></script>
         @stack('scripts') 
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // if ( window.sessionStorage ) {
-                //     if ( !sessionStorage.getItem('load') ) {
-                //         sessionStorage.setItem('load', true);
-                //         setTimeout(() => {
-                //             $('#mainloader').fadeOut(1000);
-                //         }, 2000);
-                //     } else {
-                //         $('#mainloader').hide();
-                //     }
-                // }
-            });
-        </script>
     </body>
 </html>
