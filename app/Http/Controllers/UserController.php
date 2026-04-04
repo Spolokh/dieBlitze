@@ -142,13 +142,13 @@ class UserController extends Controller
             $result = "Данные пользователя $user->username успешно сохранены.";
         } catch (\Throwable $e) {
             $status = 403;
-            $result = 'Ошибка запроса, попробуйте позже.';
-            logger()->error('Ошибка запроса при редактировании юзера', [
+            $result = 'Ошибка запроса при редактировании, попробуйте позже.';
+            logger()->error($result, [
                 'exception' => $e->getMessage()
             ]);
         } finally {
             return response()->json([
-                'success' => true,
+                'success' => $status === 200,
                 'message' => $result,
             ], $status);
         }
@@ -187,7 +187,6 @@ class UserController extends Controller
             'password.confirmed' => 'Ведённые вами пароли не совпадают',
         ]);
 
-        $data['password'] = bcrypt($data['password']);
         User::create($data);
         return redirect()->route('users.create')
             ->with('success', 'Пользователь успешно создан!');
