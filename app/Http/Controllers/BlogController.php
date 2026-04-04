@@ -235,7 +235,7 @@ class BlogController extends Controller
         }
     }
 
-    private function handleImageUpload(Request $request, Post $post): void
+    private function handleImageUpload(Request $request, Post $post, string $dir = 'posts', string|array $disk = 'uploads'): void
     {
         if ($post->image && $request->has('remove_image')) {
             if (Storage::disk('uploads')->exists('posts/' . $post->image)) {
@@ -260,7 +260,7 @@ class BlogController extends Controller
         $name = ( $request->url ?? str($request->title)->slug() ).'.'.$file->getClientOriginalExtension();
 
         try {
-            $file->storeAs('posts', $name, 'uploads');
+            $file->storeAs($dir, $name, $disk);
             $post->update(['image' => $name]);
         } catch (\Exception $e) {
             logger()->error('Ошибка обработки изображения' [
