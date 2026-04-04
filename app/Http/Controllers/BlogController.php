@@ -227,7 +227,7 @@ class BlogController extends Controller
             $status = 403;
             $result = 'Ошибка запроса при удалении поста';
             logger()->error($result, [
-              'exception' => $e->getMessage()
+              'exception' => $e
             ]);
         } finally {
             return redirect()->route('blog.index')
@@ -238,7 +238,6 @@ class BlogController extends Controller
     private function handleImageUpload(Request $request, Post $post): void
     {
         if ($post->image && $request->has('remove_image')) {
-            // Проверка существования
             if (Storage::disk('uploads')->exists('posts/' . $post->image)) {
                 Storage::disk('uploads')->delete('posts/' . $post->image);
             }
@@ -259,16 +258,13 @@ class BlogController extends Controller
 
         $file = $request->file('image');
         $name = ( $request->url ?? str($request->title)->slug() ).'.'.$file->getClientOriginalExtension();
-        
-        // Storage::disk('uploads')->directoryExists('posts')
-        //     OR Storage::disk('uploads')->makeDirectory('posts');
 
         try {
-            Storage::disk('uploads')->putFileAs('posts', $file, $name);
+            $file->storeAs('posts', $name, 'uploads');
             $post->update(['image' => $name]);
         } catch (\Exception $e) {
             logger()->error('Ошибка обработки изображения' [
-                'exception' => $e->getMessage(),
+                'exception' => $e
             ]);
         }
     }
