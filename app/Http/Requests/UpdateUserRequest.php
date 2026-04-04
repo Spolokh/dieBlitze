@@ -47,14 +47,6 @@ class UpdateUserRequest extends FormRequest
 
     public function updateUserData(): array
     {
-        $data = $this->validated();
-        
-        if (empty($data['password'])) {
-            unset($data['password']);
-        } else {
-            $data['password'] = bcrypt($data['password']);
-        }
-        
-        return $data;
+        return $this->validated();
     }
 }
