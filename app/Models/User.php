@@ -56,16 +56,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'birthdate' => 'timestamp',
-    ];
-
-
-    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -82,8 +72,9 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'deleted' => 'boolean',
             'password' => 'hashed',
-            'email_verified_at' => 'datetime'
+            'birthdate' => 'timestamp',
         ];
     }
 
