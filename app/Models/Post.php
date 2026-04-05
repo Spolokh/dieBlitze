@@ -46,12 +46,6 @@ class Post extends Model
      * @var bool
      */
     public $timestamps = false;
-    
-    /**
-     * Таблица БД, ассоциированная с моделью.
-     * @var string
-     */
-    // protected $table = 'news';
 
     protected $fillable = [
         'url',
@@ -64,15 +58,17 @@ class Post extends Model
     ];
 
     /**
-     * Первичный ключ таблицы БД.
-     * @var string
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
      */
-    protected $primaryKey = 'id';
-
-    protected $casts = [
-        'hidden' => 'boolean',
-        'date'   => 'integer',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'date'   => 'integer',
+            'hidden' => 'boolean',
+        ];
+    }
 
     /**
      * Get the story associated with the user.
