@@ -136,8 +136,14 @@ class UserController extends Controller
         
         abort_unless(( $auth?->isAdmin() || $auth->id === $user->id ) , 403, 'Доступ запрещён');
 
+        $data = $data = $request->validated();
+
+        if (empty($data['password'])) {
+             unset($data['password']);
+        }
+
         try {
-            $user->update($request->updateUserData());
+            $user->update($data);
             $status = 200;
             $result = "Данные пользователя $user->username успешно сохранены.";
         } catch (\Throwable $e) {
