@@ -132,10 +132,8 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        $auth = $request->user(); 
-        
+        $auth = $request->user();
         abort_unless(( $auth?->isAdmin() || $auth->id === $user->id ) , 403, 'Доступ запрещён');
-
         $data = $data = $request->validated();
 
         if (empty($data['password'])) {
@@ -172,27 +170,10 @@ class UserController extends Controller
      * @param  \App\Http\Requests\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
         abort_unless($request->user()->isAdmin(), 403, 'Доступ запрещён');
-        $data = $request->validate([
-            'name'      => 'nullable|between:3,20',
-            'mail'      => 'required|email|unique:users,mail',
-            'deleted'   => 'required|boolean',
-            'username'  => 'required|string|between:6,20',
-            'password'  => 'required|confirmed|between:6,20',
-            'usergroup' => 'required',
-        ], [
-            'name.between'       => 'Поле "Имя" должно содержать от 3-х до 50-ти символов',
-            'mail.unique'        => 'Такой "Email" уже зарегистрирован',
-            'mail.required'      => 'Поле "Email" обязательно для заполнения.',
-            'username.between'   => 'Поле "Логин" должно содержать от 6-и до 20-ти символов.',
-            'username.required'  => 'Поле "Логин" обязательно для заполнения.',
-            'password.between'   => 'Пароль должен содержать от 8-и до 20-ти символов',
-            'password.required'  => 'Поле "Пароль" обязательно для заполнения.',
-            'password.confirmed' => 'Ведённые вами пароли не совпадают',
-        ]);
-
+        $data = $data = $request->validated();
         User::create($data);
         return redirect()->route('users.create')
             ->with('success', 'Пользователь успешно создан!');
