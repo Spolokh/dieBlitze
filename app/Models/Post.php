@@ -65,7 +65,7 @@ class Post extends Model
     protected function casts(): array
     {
         return [
-            'date'   => 'integer',
+            'date'   => 'timestamp',
             'hidden' => 'boolean',
         ];
     }
@@ -176,8 +176,7 @@ class Post extends Model
     protected static function booted()
     {
         static::creating(function (Post $post) {
-            $post->date ??= now()->timestamp;
-            $post->url  ??= str($post->title)->slug();
+            $post->url ??= str($post->title)->slug();
             $post->user_id ??= auth()->id();
             $post->author ??= auth()->user()->username;
         });
