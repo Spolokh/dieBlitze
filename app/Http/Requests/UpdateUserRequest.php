@@ -45,8 +45,10 @@ class UpdateUserRequest extends FormRequest
         ];
     }
 
-    public function updateUserData(): array
+    protected function prepareForValidation()
     {
-        return $this->validated();
+        $this->merge([
+            'mail' => str($this->mail)->lower(),
+        ]);
     }
 }
