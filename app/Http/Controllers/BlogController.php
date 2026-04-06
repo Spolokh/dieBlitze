@@ -221,17 +221,19 @@ class BlogController extends Controller
     {
         $this->authorize('delete', $post);
         try {
+            $post->delete();
             $status = 200;
-            $result = $post->delete() ? 'Пост #ID '.$post->id.' успешно удалён' : 'Ошибка запроса при удалении поста';
+            $result = 'Пост #ID '.$post->id.' успешно удалён';
+            return redirect()->route('blog.index')
+                ->with('success', $result);
         } catch (\Throwable $e) {
             $status = 403;
             $result = 'Ошибка запроса при удалении поста';
             logger()->error($result, [
               'exception' => $e
             ]);
-        } finally {
             return redirect()->route('blog.index')
-                ->with('success', $result);
+                ->with('error', $result);
         }
     }
 
