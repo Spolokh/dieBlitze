@@ -257,7 +257,7 @@ class BlogController extends Controller
         ]);
 
         $file = $request->file('image');
-        $name = ( $request->url ?? str($request->title)->slug() ).'.'.$file->getClientOriginalExtension();
+        $name = ($request->url ?? str($request->title)->slug()).'.'.$file->extension();
 
         try {
             $file->storeAs($dir, $name, $disk);
