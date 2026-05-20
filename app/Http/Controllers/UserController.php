@@ -52,20 +52,20 @@ class UserController extends Controller
     public function json(Request $request): JsonResponse
     {
         $data = [];
-        $draw = $request->get('draw');
-        $skip = (int) $request->get('start', 0);
-        $take = (int) $request->get('length', 10);
+        $draw = $request->input('draw');
+        $skip = $request->integer('start', 0);
+        $take = $request->integer('length', 10);
 
-        $groups = $request->get('groups', 0);
-        $active = $request->boolean('delete', 0);
-        $search = $request->get('search')['value'];
+        $groups = $request->integer('groups', 0);
+        $active = $request->boolean('delete', false);
+        $search = $request->input('search.value');
 
         $orders = $request->get('order');
         $column = $request->get('columns');
 
-        $indexes = $orders[0]['column'];
-        $sorting = $orders[0]['dir'] ?? 'ASC'; 
-        $columns = $column[$indexes]['data'] ?? 'id';
+        $order = $request->input('order.0.dir', 'DESC');
+        $index = $request->integer('order.0.column', 0);
+        $field = $request->input("columns.{$index}.data", 'date');
 
         $users = User::select(User::FIELDS)
             ->with('group:id,name')
@@ -83,19 +83,18 @@ class UserController extends Controller
             );
 
         $count = $users->count();
-        $query = $users->orderBy($columns, $sorting)
+        $data = (clone $users)->orderBy($field, $order)
             ->skip($skip)
             ->take($take)
-            ->get();
-
-        $data = $query->map(fn($row) => [
-            'id'        => $row->id,
-            'date'      => $row->date,
-            'mail'      => $row->mail,
-            'name'      => $row?->name ?? $row->username,
-            'usergroup' => $row->group?->name,
-            'avatar'    => $row->avatarUrl,
-        ]);
+            ->get()
+            ->map(fn($row) => [  
+                'id'        => $row->id,
+                'date'      => $row->date,
+                'mail'      => $row->mail,
+                'name'      => $row->name ?: $row->username,
+                'usergroup' => $row->group?->name,
+                'avatar'    => $row->avatarUrl,
+            ])->values();
 
         return response()->json([
             'draw' => $draw,
