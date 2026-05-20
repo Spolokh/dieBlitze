@@ -57,6 +57,9 @@ class RegistrationController extends Controller
     public function verify(Request $request, $id)
     {
         $user = User::isActive(true)->find($id);
+        if (empty($user) || $user->deleted == 0) {
+            return redirect()->route('home')->with('info', 'Такого пользователя не существует.');
+        }
 
         if (!hash_equals((string) $id, (string) $user->getKey())) {
             throw ValidationException::withMessages([
@@ -64,10 +67,6 @@ class RegistrationController extends Controller
             ]);
         }
 
-        if ( $user->deleted == 0 ) {
-            return redirect()->route('home')->with('info', 'Ваш аккаунт уже активен.');
-        }
-        
         if ( !hash_equals((string) $request->route('hash'), sha1($user->mail)) ) {
             logger()->warning('Неверная ссылка верификации', [
                 'id' => $id, 
