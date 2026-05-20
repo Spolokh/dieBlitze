@@ -178,4 +178,14 @@ class User extends Authenticatable
         ))->format($this->date);
         return mb_strtoupper(mb_substr($formatter, 0, 1)) . mb_substr($formatter, 1);
     }
+
+    protected static function booted()
+    {
+        static::creating(function (User $user) {
+            $user->date ??= now()->timestamp;
+            $user->location ??= request()?->ip() ?? '127.0.0.1';
+            $user->deleted  ??= true;
+            $user->usergroup ??= 4;
+        });
+    }
 }
