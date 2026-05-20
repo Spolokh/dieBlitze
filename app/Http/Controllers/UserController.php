@@ -173,7 +173,7 @@ class UserController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         abort_unless($request->user()->isAdmin(), 403, 'Доступ запрещён');
-        $data = $data = $request->validated();
+        $data = $request->validated();
         User::create($data);
         return redirect()->route('users.create')
             ->with('success', 'Пользователь успешно создан!');
