@@ -73,9 +73,11 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'date'  => 'integer',
+            'phone' => 'string',
             'deleted' => 'boolean',
             'password' => 'hashed',
-            'birthdate' => 'timestamp',
+            'birthdate' => 'datetime:Y-m-d',
         ];
     }
 
